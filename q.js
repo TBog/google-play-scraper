@@ -1,4 +1,4 @@
-var gplay = require('google-play-scraper');
+var gplay = require('./index');
 
 // Routing
 var express = require("express");
