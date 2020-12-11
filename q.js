@@ -12,6 +12,7 @@ app.use(logfmt.requestLogger());
 var routes = {
 	root: '/',
 	app: '/app/:appID',
+	shieldEndPoint: '/sep/:appID',
 	search: '/search/:queryStr'
 }
 
@@ -43,6 +44,20 @@ app.get(routes.app, function(req, res) {
 
 	gplay.app({appId: req.params.appID})
     .then( (out) => res.send(out) )
+    .catch( console.log );
+});
+
+app.get(routes.shieldEndPoint, function(req, res) {
+	gplay.app({appId: req.params.appID})
+    .then( function(json) {
+      let endpoint = {
+        schemaVersion: "1",
+        label: json.title,
+        message: json.version,
+        style: "plastic"
+      };
+      res.json(endpoint)
+    })
     .catch( console.log );
 });
 
