@@ -50,16 +50,23 @@ app.get(routes.app, function(req, res) {
 app.get(routes.shieldEndPoint, function(req, res) {
 	gplay.app({appId: req.params.appID})
     .then( function(json) {
+      let version = !isNaN(json.version.charAt(0)) ? ("v" + json.version) : json.version;
       let endpoint = {
-        schemaVersion: "1",
+        schemaVersion: 1,
         label: json.title,
-        message: json.version,
+        message: version,
+        namedLogo: "google-play",
+        labelColor: "414141",
+        color: "007ec6",
         style: "plastic"
       };
       res.json(endpoint)
     })
-    .catch( console.log );
-});
+    .catch( function(err) {
+      console.error(err.stack);
+      res.send(err.message);
+    });
+  });
 
 // gplay.app({appId: 'com.google.android.apps.translate'})
 //   .then(console.log, console.log);
